@@ -1,30 +1,25 @@
 # LinPatrol
 
-LinPatrol is a professional-grade security terminal and browser extension that implements a "Shield-First" architecture. It pre-emptively blocks malicious content at document start before any rendering occurs. It features a border-aligned Side Panel with 4K interactive particle intelligence, AI-driven threat analysis, and a 13-layer heuristic engine.
+LinPatrol is a browser extension and web dashboard created to help detect malicious links and phishing attempts.
 
-## Hackathon Context
+## Background
 
-This repository contains a project built for the ACM NEXUS 26 hackathon (MITS x CLIQUE). It was completely AI-based and "vibe-coded" during the event.
+This is a "vibe-coded" project built entirely using AI for the ACM NEXUS 26 hackathon (MITS x CLIQUE). 
 
-Note: The AI Persona feature mentioned below is currently a mock-up built for demonstration purposes. It is designed to be integrated with locally running AI models, but the backend API integration is not yet complete.
+*Note: The AI threat analysis feature shown in the interface is currently a mock-up for demonstration purposes. It is meant to connect to a local AI model, but the backend API integration is not fully complete.*
 
-## Problem Statement
+## Features
 
-Users frequently encounter malicious links and phishing attempts while browsing, struggling to manually verify the safety of URLs leading to potential data breaches.
-
-## Elite Features
-
-* Shield-First Technology: Nanosecond page-blanking to prevent background threat execution.
-* 13-Layer Heuristic Suite: Detects IDN Spoofing, DGA botnets, Brand Mismatches, and data exfiltration.
-* Border-Aligned Terminal: A persistent Side Panel Command Center with glassmorphic UI.
-* AI Persona: Integrated LinPatrol AI for proactive advice and scam message analysis (Local API mock-up).
-* Dynamic Visual Intelligence: Interactive 'Cyber-Constellation' background that triggers a 'Red Alert' pulse when threats are detected.
+- **Early Blocking:** Hides web pages quickly if they are flagged as dangerous.
+- **Link Checking:** Scans links to detect spoofed domains, bad extensions, or suspicious patterns.
+- **Browser Side Panel:** A sidebar menu to control the extension settings.
+- **AI Chatbot (Mock):** A UI intended for asking a local AI model about security threats.
 
 ## Project Structure
 
-- `linpatrol/` - The LinPatrol browser extension.
-- `frontend/` - Frontend application for LinPatrol.
+- `linpatrol/` - The browser extension source code.
+- `frontend/` - The web dashboard interface.
 
-## Previews
+## Preview
 
-![LinPatrol Portfolio - Dark Mode Pulse](assets/6.png)
+![LinPatrol Portfolio](assets/6.png)
