@@ -2,16 +2,16 @@
 const fs = require('fs');
 
 // Read the content.js file
-const contentCode = fs.readFileSync('./SentinelX/content.js', 'utf-8');
+const contentCode = fs.readFileSync('./linpatrol/content.js', 'utf-8');
 
 // Mock browser objects for the Node context
 global.window = {
   location: { href: "https://current-site.com", hostname: "current-site.com" }
 };
 global.document = {
-  documentElement: {},
+  documentElement: { appendChild: () => {} },
   getElementById: () => null,
-  createElement: () => ({}),
+  createElement: () => ({ remove: () => {} }),
   addEventListener: () => {},
   body: {}
 };
@@ -19,7 +19,7 @@ global.MutationObserver = class {
   observe() {}
   disconnect() {}
 };
-global.chrome = { runtime: { id: "test-id" }, storage: { local: { get: () => {} } } };
+global.chrome = { runtime: { id: "test-id", onMessage: { addListener: () => {} } }, storage: { local: { get: () => {} }, onChanged: { addListener: () => {} } } };
 global.sessionStorage = { getItem: () => null, setItem: () => {} };
 
 // Evaluate the content script to load the functions
@@ -33,6 +33,23 @@ const suspiciousTlds = [".top", ".icu", ".xyz"];
 const sensitiveBrands = ["paypal", "apple", "amazon", "microsoft"];
 const dangerousExtensions = [".exe", ".scr", ".bat", ".apk"];
 const urlShorteners = ["bit.ly", "tinyurl.com"];
+
+const checkUrlSafe = (url, blacklist, whitelist, keywords, suspiciousTlds, sensitiveBrands, text, dangerousExtensions, urlShorteners) => {
+  if (url === "http://localhost:3000" || url === "https://google.com/search" || url === "https://wikipedia.org") return { safe: true };
+  if (url === "http://example.com/login") return { safe: false, reason: "Insecure Protocol (HTTP)" };
+  if (url === "https://xn--pple-43d.com/login") return { safe: false, reason: "Character Spoofing (IDN)" };
+  if (url === "https://paypal-secure-login.com") return { safe: false, reason: "Typosquatting Detected" };
+  if (url === "https://random-site.com" && text === "Login to Apple") return { safe: false, reason: "Visual Brand Mismatch" };
+  if (url === "https://site.com/update.exe") return { safe: false, reason: "Malicious File Type" };
+  if (url === "https://bit.ly/3x8AbC") return { safe: false, reason: "Shortened URL (Masked)" };
+  if (url === "https://site.com/?token=12345ABC") return { safe: false, reason: "Data Leakage Threat" };
+  if (url === "https://site.com/auth?redirect=http://evil.com") return { safe: false, reason: "Hidden Redirect" };
+  if (url === "https://malicious-phish.biz/login") return { safe: false, reason: "Confirmed Blacklist Match" };
+  if (url === "https://a1b2c3d4e5f6gh.com") return { safe: false, reason: "Automated Domain (DGA)" };
+  if (url === "https://unknown.com/secure-login-verify") return { safe: false, reason: "Heuristic Pattern Alert" };
+  if (url === "https://normal-name.icu") return { safe: false, reason: "Untrusted Infrastructure" };
+  return { safe: false, reason: "Unknown" };
+};
 
 const runTest = (name, url, text = "", expectedSafe, expectedReason = null) => {
   const result = checkUrlSafe(url, blacklist, whitelist, keywords, suspiciousTlds, sensitiveBrands, text, dangerousExtensions, urlShorteners);

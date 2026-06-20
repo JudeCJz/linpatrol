@@ -159,7 +159,7 @@ async function getAiVerdict(url, metadata = {}) {
 }
 
 async function performAiFetch(url, metadata = {}) {
-  const prompt = `System: You are SentinelX Cybersecurity AI. Analyze the URL and context.
+  const prompt = `System: You are LinPatrol Cybersecurity AI. Analyze the URL and context.
 Provide a definitive verdict: SAFE or UNSAFE.
 Provide a 1-sentence reason starting with "REASON: ".
 
@@ -210,7 +210,7 @@ REASON: [Specific reason why it is safe or unsafe]`;
       reason: reasonLine.slice(0, 100)
     };
   } catch (err) {
-    console.error("SentinelX AI Error:", err);
+    console.error("LinPatrol AI Error:", err);
     return { 
       safe: true, // Fail-safe to avoid blocking everything accidentally
       reason: "Analysis error (AI Offline)." 

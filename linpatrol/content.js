@@ -20,9 +20,9 @@ let securitySettings = {
 
 // [Expert Security Shield] - Immediate Execution
 const applyShield = (el) => {
-  if (document.getElementById("SentinelX-shield")) return;
+  if (document.getElementById("LinPatrol-shield")) return;
   const shield = document.createElement("style");
-  shield.id = "SentinelX-shield";
+  shield.id = "LinPatrol-shield";
   shield.textContent = "html { display: none !important; }";
   el.appendChild(shield);
 };
@@ -32,7 +32,7 @@ if (document.documentElement) {
 }
 
 function restoreVisibility() {
-  const shield = document.getElementById("SentinelX-shield");
+  const shield = document.getElementById("LinPatrol-shield");
   if (shield) shield.remove();
 }
 
@@ -102,7 +102,7 @@ async function analyzeLink(link) {
       } 
     }, (aiResult) => {
       if (chrome.runtime?.lastError) {
-        console.warn("SentinelX: Context invalidated, stopping scan.");
+        console.warn("LinPatrol: Context invalidated, stopping scan.");
         return;
       }
       
@@ -111,7 +111,7 @@ async function analyzeLink(link) {
       }
     });
   } catch (e) {
-    console.warn("SentinelX: Communication failed (Context invalidated)");
+    console.warn("LinPatrol: Communication failed (Context invalidated)");
   }
 }
 
@@ -270,7 +270,7 @@ function showTooltip(link, reason, e) {
   hideTooltip();
   activeTooltip = document.createElement("div");
   activeTooltip.className = "lss-tooltip";
-  activeTooltip.innerHTML = `<strong>SentinelX Analysis</strong>${reason}<br><span class="lss-url">${link.href || link.dataset.lssHref}</span>`;
+  activeTooltip.innerHTML = `<strong>LinPatrol Analysis</strong>${reason}<br><span class="lss-url">${link.href || link.dataset.lssHref}</span>`;
   document.body.appendChild(activeTooltip);
   const rect = link.getBoundingClientRect();
   activeTooltip.style.top = `${window.scrollY + rect.bottom + 8}px`;
@@ -308,7 +308,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (window.location.hostname.includes("mail.google.com")) scanTextForLinks(document.body);
     sendResponse({ success: true });
   } else if (request.type === "AI_SHOW_ALERT") {
-    alert(`[SentinelX AI] Analysis: ${request.verdict}\n\nReason: ${request.reason}`);
+    alert(`[LinPatrol AI] Analysis: ${request.verdict}\n\nReason: ${request.reason}`);
   }
   return true;
 });
